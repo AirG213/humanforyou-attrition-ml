@@ -1,8 +1,6 @@
-# Livrable éthique - Projet IA HumanForYou 
+# Livrable éthique - Projet IA HumanForYou (Attrition)
 
-## Gestion du Turnover des employés avec une IA responsable
-
-| Membres | Role |
+| Équipe projet | Rôle |
 | :--- | :--- |
 | **Gouadfel Rayan** | *Project Manager* |
 | **Trappier Quentin** | *Data Analyst* |
@@ -11,248 +9,158 @@
 
 ---
 
+## Résumé exécutif
+
+**Contexte** : HumanForYou (4410 employés, taux d'attrition 16,12%) souhaite développer un modèle prédictif d'aide à la décision RH. **Position éthique** : Le modèle constitue un outil d'aide à la décision, jamais un automate de décisions individuelles. **Décision retenue** : Combinaison solution B (modèle explicable) + D (communication agrégée uniquement) après application de la méthodologie CESI 7-étapes. **Garde-fous principaux** : Audit fairness systématique, transparence documentée, accès restreint, aucun scoring individuel communiqué, revue humaine obligatoire. **Conformité** : Application des 7 exigences d'IA digne de confiance (Commission Européenne) avec registre de décisions traçables.
+
+---
+
 ## Table des matières
 
-1. [Contexte et finalité du projet](#1-contexte-et-finalité-du-projet)
-2. [Données utilisées et sensibilité](#2-données-utilisées-et-sensibilité)
-3. [Méthodologie d'analyse éthique](#3-méthodologie-danalyse-éthique)
-   * [3.1. Démarche de décision éthique (atelier CESI)](#31-démarche-de-décision-éthique-atelier-cesi---gono-go)
-4. [Exigence 1 - Respect de l'autonomie humaine](#4-exigence-1---respect-de-lautonomie-humaine)
-5. [Exigence 2 - Robustesse technique et sécurité](#5-exigence-2---robustesse-technique-et-sécurité)
-6. [Exigence 3 - Confidentialité et gouvernance des données](#6-exigence-3---confidentialité-et-gouvernance-des-données)
-7. [Exigence 4 - Transparence](#7-exigence-4---transparence)
-8. [Exigence 5 - Diversité, non-discrimination et équité](#8-exigence-5---diversité-non-discrimination-et-équité)
-9. [Exigence 6 - Bien-être environnemental et sociétal](#9-exigence-6---bien-être-environnemental-et-sociétal)
-10. [Exigence 7 - Responsabilité](#10-exigence-7---responsabilité)
-11. [Décisions éthiques transverses](#11-décisions-éthiques-transverses)
-12. [Points de vigilance identifiés](#12-points-de-vigilance-identifiés)
-13. [Synthèse et engagements](#13-synthèse-et-engagements)
-14. [Checklist de contrôles éthiques](#14-checklist-de-contrôles-éthiques)
-15. [Glossaire](#15-glossaire)
-16. [Références et sources](#16-références-et-sources)
+1. [Contexte et finalité](#1-contexte-et-finalité)
+2. [Données et sensibilité](#2-données-et-sensibilité) 
+3. [Méthodologie CESI appliquée](#3-méthodologie-cesi-appliquée)
+4. [Exigences UE d'IA digne de confiance](#4-exigences-ue-dia-digne-de-confiance)
+5. [Registre de décisions](#5-registre-de-décisions)
+6. [Conclusion](#6-conclusion)
 
 ---
 
-## 1. Contexte et finalité du projet
+## 1. Contexte et finalité
 
-HumanForYou est une entreprise pharmaceutique (4 410 employés dans le dataset) confrontée à un taux d'attrition de 16,12 % (711 départs sur 4 410). Le projet vise à identifier les facteurs d'attrition, proposer un modèle prédictif et formuler des recommandations d'amélioration.
+HumanForYou est une entreprise pharmaceutique confrontée à un taux d'attrition de **16,12%** (711 départs sur 4410 employés). Le projet vise à identifier les facteurs d'attrition et formuler des recommandations d'amélioration par un modèle prédictif.
 
-**Positionnement éthique** : le modèle est un **outil d'aide à la décision**, non un automate de décisions RH individuelles.
-
----
-
-## 2. Données utilisées et sensibilité
-
-Sources anonymisées (4 410 EmployeeID) :
-
-- **general_data.csv** (4 410 × 24) : profil, poste, salaire, ancienneté, déplacements, formation, et variable cible Attrition.
-- **manager_survey_data.csv** (4 410 × 3) : implication et performance évaluées par managers. Aucune valeur manquante.
-- **employee_survey_data.csv** (4 410 × 4) : enquête QVT (satisfaction environnement, travail, équilibre). 83 non-réponses au total.
-- **in_time.csv / out_time.csv** (4 410 × 262) : horaires de badgeuse 2015 (261 jours ouvrés), 9,5 % de cellules NA.
-
-**Variables constantes détectées** : `EmployeeCount`, `Over18`, `StandardHours` (inutiles pour modélisation).  
-**Valeurs manquantes** : 19 NA dans `NumCompaniesWorked`, 9 NA dans `TotalWorkingYears`.  
-**Risque de ré-identification** : petits sous-groupes (189 employés HR, 81 en EducationField HR).
+**Finalité éthique** : Améliorer les conditions de travail et la rétention **sans surveillance ni discrimination individuelle**.
 
 ---
 
-## 3. Méthodologie d'analyse éthique
+## 2. Données et sensibilité
 
-Cadre : **7 exigences d'une IA digne de confiance (Commission Européenne)** appliquées aux choix techniques et organisationnels du projet.
+**Sources** : 4 fichiers anonymisés (EmployeeID 1-4410) couvrant profils RH, évaluations managers, enquêtes QVT et données de badgeuse 2015.
 
-### 3.1 Démarche de décision éthique (atelier CESI - go/no-go)
+**Synthèse des points critiques** :
+- Valeurs manquantes : 83 non-réponses QVT, 28 NA variables RH
+- Variables constantes : 3 variables inutiles identifiées 
+- Déséquilibre classes : 83,9% vs 16,1% sur variable cible
+- Risque ré-identification : petits sous-groupes (HR : 189 employés)
 
-1. **Situation** : Dataset RH sensible, disparités d'attrition observées (célibataires 25,5 %, HR 30,2 %), usage potentiel réel.
-2. **Objectif** : Améliorer rétention sans surveillance ni discrimination individuelle.
-3. **Options** : Modèle complet (A), explicable (B), descriptif seul (C), agrégé (D).
-4. **Parties prenantes** : Employés, RH, managers, direction, équipe data, société.
-5. **Impacts** : Performance vs équité, transparence vs protection, business vs individus.
-6. **Filtre éthique** : Respect personnes, non-malveillance, transparence, légalité, valeurs collectives.
-7. **Go/No-go** : Validation collective + personnelle (test de la règle d'or).
-
-**Décision retenue** : combinaison B + D (modèle explicable + communication agrégée).
+*Détails complets : voir [annexes_ethics.md](annexes_ethics.md)*
 
 ---
 
-## 4. Exigence 1 - Respect de l'autonomie humaine
+## 3. Méthodologie CESI appliquée
 
-**Risque** : Automatisation des décisions RH basée sur scores algorithmiques.  
-**Décision** : Le modèle ne déclenche aucune action automatique, toute décision reste humaine et contextualisée.  
-**Contrôles** :
-- Procédure écrite : "score = indicateur, pas verdict"
-- Revue humaine obligatoire avant action
-- Traçabilité des décisions RH
+### 3.1 Situation initiale
+Dataset RH sensible, disparités observées (célibataires 25,5%, HR 30,2%), usage potentiel réel avec impact sur les employés.
 
----
+### 3.2 Solutions envisagées
 
-## 5. Exigence 2 - Robustesse technique et sécurité
+| Solution | Description | Performance | Éthique |
+|---|---|---|---|
+| **A - Complet** | Toutes variables, y compris sensibles | Maximale | Risque discrimination |
+| **B - Explicable** | Variables non-sensibles, modèle interprétable | Correcte | Transparence élevée |
+| **C - Descriptif** | Analyse statistique seule, pas de scoring | Nulle | Risque minimal |
+| **D - Agrégé** | Modèle entraîné, résultats collectifs uniquement | Moyenne | Équilibre |
 
-**Risque** : Overfitting, données manquantes (83 non-réponses QVT, 28 NA variables RH), déséquilibre classes (83,9 % / 16,1 %).  
-**Décision** : Validation croisée, comparaison multi-modèles, métriques adaptées au déséquilibre (F1, AUC).  
-**Contrôles** :
-- Tests de sensibilité par sous-groupes
-- Monitoring performance dans le temps
-- Stratégie de retraining planifiée
+### 3.3 Parties prenantes
 
----
+| Partie prenante | Intérêt principal | Risque exposition |
+|---|---|---|
+| **Employés** | Protection données, non-discrimination | Élevé |
+| **RH** | Recommandations actionnables | Moyen |
+| **Managers** | Support décisionnel | Moyen |
+| **Direction** | Performance business | Faible |
+| **Équipe data** | Qualité technique et éthique | Moyen |
 
-## 6. Exigence 3 - Confidentialité et gouvernance des données
+### 3.4 Impacts par solution
 
-**Risque** : Ré-identification (petits sous-groupes), accès non autorisé, conservation excessive.  
-**Décision** : Traitement local, minimisation données, séparation raw/processed.  
-**Contrôles** :
-- Accès restreint aux membres projet
-- Suppression données brutes des rapports
-- Documentation transformations et provenance
+| Solution | Avantages | Inconvénients | Risques |
+|---|---|---|---|
+| **B** | Explicabilité, confiance | Performance moindre | Sous-détection |
+| **D** | Protection individuelle | Perte granularité | Non-détection situations critiques |
+| **B+D** | Équilibre transparence/protection | Complexité mise en œuvre | Gestion double contrainte |
 
----
+### 3.5 Filtre éthique
 
-## 7. Exigence 4 - Transparence
+| Critère éthique | Évaluation solution B+D | Décision |
+|---|---|---|
+| **Respect des personnes** | ✅ Aucun scoring individuel communiqué | Conforme |
+| **Non-malveillance** | ✅ Usage amélioration RH, pas surveillance | Conforme |  
+| **Transparence** | ✅ Modèles explicables + documentation | Conforme |
+| **Légalité** | ✅ Respect RGPD + non-discrimination | Conforme |
+| **Valeurs collectives** | ✅ Amélioration conditions travail | Conforme |
 
-**Risque** : Décisions incomprises, scores mal interprétés, boîte noire.  
-**Décision** : Modèles explicables privilégiés (régression logistique, arbres), documentation complète des étapes.  
-**Contrôles** :
-- Fiches variables et limites pour non-techniciens
-- Explication facteurs influents
-- Avertissement corrélation ≠ causalité
-
----
-
-## 8. Exigence 5 - Diversité, non-discrimination et équité
-
-**Risque** : Discrimination via variables sensibles (Gender, MaritalStatus, Department, EducationField), reproduction biais historiques.
-
-**Disparités observées** :
-- MaritalStatus : Single 25,5 % vs Divorced 10,1 %
-- Department : HR 30,2 % vs Sales 15,0 %
-- EducationField : HR 40,7 % vs Technical 11,4 %
-
-**Décision** : Audit fairness systématique, test avec/sans variables sensibles.  
-**Contrôles** :
-- Comparaison taux FP/FN par sous-groupes
-- Possibilité retrait variables discriminantes
-- Règle métier : pas d'action basée sur attribut protégé
+**Décision GO** validée collectivement et individuellement (test règle d'or).
 
 ---
 
-## 9. Exigence 6 - Bien-être environnemental et sociétal
+## 4. Exigences UE d'IA digne de confiance
 
-**Risque** : Climat de surveillance, stress employés, dérives managériales.  
-**Décision** : Cadrage "amélioration conditions travail", pas de scoring individuel communiqué.  
-**Contrôles** :
-- Charte d'usage, formation utilisateurs
-- Recommandations collectives/organisationnelles uniquement
-- Indicateurs QVT post-déploiement
+### 4.1 Respect de l'autonomie humaine
+- **Risques** : Automatisation décisions, scoring punitif, déresponsabilisation
+- **Décisions** : Aucune action automatique, revue humaine obligatoire, traçabilité
+- **Contrôles** : Procédure "score = indicateur", validation managériale, audit usage
 
----
+### 4.2 Robustesse technique et sécurité  
+- **Risques** : Overfitting, déséquilibre classes, données manquantes
+- **Décisions** : Validation croisée, métriques adaptées (F1/AUC), comparaison multi-modèles
+- **Contrôles** : Tests sensibilité, monitoring performance, stratégie retraining
 
-## 10. Exigence 7 - Responsabilité
+### 4.3 Confidentialité et gouvernance données
+- **Risques** : Ré-identification, accès non-autorisé, conservation excessive  
+- **Décisions** : Traitement local, minimisation données, séparation raw/processed
+- **Contrôles** : Accès restreint équipe, suppression données brutes rapports, documentation provenance
 
-**Risque** : Dilution responsabilités ("c'est l'algorithme"), absence redevabilité.  
-**Décision** : Responsabilité RH sur décisions, équipe data sur qualité modèle.  
-**Contrôles** :
-- Registre versions (modèle, date, métriques)
-- Procédure contestation/revue
-- Mécanisme remontée incidents
+### 4.4 Transparence
+- **Risques** : Boîte noire, scores mal interprétés, décisions incomprises
+- **Décisions** : Modèles explicables privilégiés, documentation complète étapes
+- **Contrôles** : Fiches variables non-techniciens, explication facteurs, avertissement corrélation≠causalité
 
----
+### 4.5 Diversité, non-discrimination et équité
+- **Risques** : Discrimination variables sensibles, reproduction biais historiques, disparités (Single 25,5% vs Divorced 10,1%)
+- **Décisions** : Audit fairness systématique, tests avec/sans variables sensibles, règle métier anti-discrimination  
+- **Contrôles** : Comparaison taux FP/FN sous-groupes, retrait variables discriminantes, protection petits groupes
 
-## 11. Décisions éthiques transverses
+### 4.6 Bien-être environnemental et sociétal
+- **Risques** : Climat surveillance, stress employés, dérives managériales
+- **Décisions** : Cadrage "amélioration conditions", pas scoring individuel communiqué, usage collectif
+- **Contrôles** : Charte usage, formation utilisateurs, indicateurs QVT post-déploiement
 
-- Modèle = aide décision, jamais automatisation
-- Transparence : variables et limites documentées
-- Minimisation : variables constantes supprimées
-- Fairness : audit par sous-groupes systématique
-- Sécurité : accès restreint, séparation raw/processed
-- Traçabilité : documentation choix et transformations
-
----
-
-## 12. Points de vigilance identifiés
-
-L'analyse du dataset révèle :
-
-- **Non-réponses QVT** : 83 employés (risque biais sélection)
-- **Variables constantes** : 3 variables inutiles à supprimer
-- **NA données RH** : 28 valeurs manquantes à traiter
-- **Déséquilibre classes** : stratégie métrique adaptée nécessaire
-- **Petits sous-groupes** : risque ré-identification HR (189 employés)
-
-*Détails chiffrés : voir annexes_ethics.md*
+### 4.7 Responsabilité
+- **Risques** : Dilution responsabilités, absence redevabilité, "c'est l'algorithme"  
+- **Décisions** : Responsabilité RH sur décisions, équipe data sur qualité modèle, traçabilité complète
+- **Contrôles** : Registre versions, procédure contestation, mécanisme remontée incidents
 
 ---
 
-## 13. Synthèse et engagements
+## 5. Registre de décisions
 
-**Appropriation** : Le projet applique les 7 exigences IA européennes et la méthode décisionnelle CESI (7 étapes structurées) pour garantir choix éthiques documentés et assumables.
-
-**Engagements** :
-- Aide à la décision stratégique RH uniquement
-- Transparence : modèles explicables et documentation
-- Minimisation : suppression variables inutiles/constantes
-- Fairness : audit discrimination par sous-groupes
-- Sécurité : protection données et accès restreint
-- Traçabilité : documentation complète des choix
-
-**Pérennité** : Monitoring continu des biais et dérive si mise en production, formation utilisateurs, mise à jour modèle planifiée.
-
----
-
-## 14. Checklist de contrôles éthiques
-
-**Avant communication des résultats** :
-
-- [ ] Vérifier fairness par sous-groupes (Gender, MaritalStatus, Department, EducationField)
-- [ ] Comparer taux FP/FN entre groupes sensibles  
-- [ ] Supprimer variables constantes (EmployeeCount, Over18, StandardHours)
-- [ ] Documenter stratégie traitement NA (28 valeurs)
-- [ ] Éviter résultats nominatifs/scoring individuel
-- [ ] Protéger petits sous-groupes (< 200 employés)
-- [ ] Valider métriques adaptées au déséquilibre classes
-- [ ] Documenter limites et biais du modèle
-- [ ] Préparer communication non-techniciens
-- [ ] Tracer décisions et justifications éthiques
+| Décision | Niveau | Exigence UE | Risque mitigé | Contrôle associé |
+|---|---|---|---|---|
+| Modèle explicable (régression/arbres) | Modèle-métriques | Transparence | Boîte noire | Documentation variables |
+| Communication agrégée uniquement | Résultats métier | Autonomie humaine | Scoring punitif | Charte usage |
+| Suppression variables constantes | Données | Confidentialité | Sur-collecte | Minimisation |
+| Audit fairness par sous-groupes | Modèle-métriques | Non-discrimination | Biais historiques | Tests FP/FN |
+| Accès restreint équipe projet | Données | Confidentialité | Accès non-autorisé | Contrôle identité |
+| Validation croisée obligatoire | Modèle-métriques | Robustesse | Overfitting | Tests sensibilité |
+| Traçabilité décisions RH | Déploiement/usage | Responsabilité | Dilution responsabilité | Registre versions |
+| Formation utilisateurs RH | Déploiement/usage | Bien-être sociétal | Dérive managériale | Charte + formation |
 
 ---
 
-## 15. Glossaire
+## 6. Conclusion
 
-**AUC (Area Under the Curve)** : Métrique d'évaluation de la performance d'un modèle de classification, mesure la capacité à distinguer les classes (ici : employés partants vs restants).
+### Conditions d'usage
+Le modèle est autorisé **exclusivement** comme outil d'aide à la décision stratégique RH. Toute utilisation pour scoring individuel, décisions automatisées ou surveillance est **prohibée**.
 
-**Attrition** : Taux de départ volontaire des employés d'une entreprise (démissions, fins de contrat non renouvelées).
+### Limites identifiées  
+- Performance potentiellement réduite par contraintes éthiques
+- Risque sous-détection situations critiques individuelles
+- Nécessité expertise RH pour interpréter recommandations
 
-**Cross-validation (Validation croisée)** : Technique de validation de modèle qui divise les données en plusieurs plis pour tester la robustesse et éviter l'overfitting.
+### Responsabilité
+- **Équipe data** : qualité technique, documentation, audit biais
+- **Service RH** : décisions finales, formation utilisateurs, respect charte usage
+- **Direction** : validation politique éthique, ressources monitoring
 
-**Dataset** : Jeu de données structuré utilisé pour l'entraînement et l'évaluation du modèle IA.
-
-**EmployeeID** : Identifiant unique anonymisé de chaque employé dans le dataset (de 1 à 4410).
-
-**F1-score** : Moyenne harmonique entre précision et rappel, particulièrement utile pour les classes déséquilibrées comme l'attrition.
-
-**Fairness (Équité)** : Principe garantissant que le modèle ne discrimine pas certains groupes d'employés basés sur des caractéristiques sensibles.
-
-**FN (Faux Négatifs)** : Employés prédits comme "restants" mais qui partent réellement. Risque : ne pas identifier des signaux d'attrition.
-
-**FP (Faux Positifs)** : Employés prédits comme "partants" mais qui restent finalement. Risque : alarmes infondées et stress managérial.
-
-**NA (Not Available)** : Valeurs manquantes dans le dataset (ex: 83 non-réponses dans l'enquête QVT, 28 NA dans les variables RH).
-
-**Overfitting** : Phénomène où un modèle apprend "par cœur" les données d'entraînement au détriment de sa capacité de généralisation.
-
-**QVT (Qualité de Vie au Travail)** : Ensemble d'indicateurs mesurant la satisfaction, l'équilibre vie professionnelle/personnelle et l'environnement de travail.
-
-**Variables constantes** : Variables qui ont la même valeur pour tous les employés (ex: EmployeeCount=1, Over18="Y"), inutiles pour la modélisation.
-
-**Variables sensibles** : Attributs protégés par la loi anti-discrimination (Genre, État civil, Âge, Département) nécessitant une vigilance particulière.
-
----
-
-## 16. Références et sources
-
-**Commission Européenne** : *Lignes directrices en matière d'éthique pour une IA digne de confiance* (Groupe d'experts de haut niveau sur l'IA - HLEG). Définit les 7 exigences d'une IA responsable appliquées dans ce projet.
-
-**CESI École d'Ingénieurs** : *Méthodologie de prise de décision éthique en 7 étapes*. Cadre décisionnel structuré pour les choix techniques et organisationnels du projet.
-
-**Dataset HumanForYou** : Données anonymisées de 4410 employés (2015) incluant profils RH, enquêtes satisfaction, évaluations managers et données de badgeuse.
-
-*Détails techniques et tableaux complémentaires : voir [annexes_ethics.md](annexes_ethics.md)*
+**Validation finale** : Ce projet respecte les 7 exigences UE et applique rigoureusement la méthodologie CESI pour garantir une IA digne de confiance.

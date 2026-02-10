@@ -4,3 +4,9 @@ matplotlib
 seaborn
 scikit-learn
 jupyter
+plotly
+missingno
+folium
+dash
+dash_core_components
+dash_html_components
