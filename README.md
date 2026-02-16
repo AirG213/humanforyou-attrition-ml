@@ -37,9 +37,12 @@ Identify key drivers of attrition and build predictive models.
 | # | Notebook | Output |
 |---|---|---|
 | 01 | `01_EDA.ipynb` | `data/processed/eda_summary.csv` |
-| 02 | `02_Preprocessing.ipynb` | `data/processed/cleaned_attrition_base.csv` |
-| 03 | `03_FeatureEngineering_Badgeuse.ipynb` | `data/processed/attrition_with_time_features.csv` |
-| 04 | `04_KMeans_Exploration.ipynb` | `data/processed/kmeans_attrition_clusters.csv`, `kmeans_metrics.json` |
+| 02 | `02_Preprocessing.ipynb` | `data/processed/attrition_merged_base.csv` |
+| 03 | `03_FeatureEngineering_Badgeuse.ipynb` | `data/processed/attrition_with_avg_hours.csv` |
+| 04 | `04_KMeans_Exploration.ipynb` | `data/processed/kmeans_clusters.csv` |
+| 05 | `05_Regression_Preparation.ipynb` | `data/processed/housing_train_prepared.csv`, `data/processed/housing_test_prepared.csv` |
+| 06 | `06_Regression_Lineaire.ipynb` | `data/processed/housing_linear_metrics.csv`, `data/processed/housing_linear_test_predictions.csv`, `data/processed/housing_linear_coefficients.csv` |
+| 07 | `07_Regression_Comparaison_Modeles.ipynb` | `data/processed/housing_model_comparison.csv`, `data/processed/housing_model_predictions_test.csv`, `data/processed/housing_model_cv_scores.csv` |
 
 
 ## Prosit 1 livrables
@@ -66,5 +69,5 @@ Identify key drivers of attrition and build predictive models.
 ```bash
 pip install -r requirements.txt
 jupyter notebook
-# Exécuter les notebooks dans l'ordre 01 → 04
+# Exécuter les notebooks dans l'ordre 01 → 07
 ```
