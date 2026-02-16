@@ -1,0 +1,2 @@
+model,accuracy_test,precision_test,recall_test,f1_test,roc_auc_test
+LogisticRegression_balanced,0.764172335600907,0.376865671641791,0.7112676056338029,0.4926829268292683,0.7912923486867148
