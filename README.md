@@ -40,9 +40,13 @@ Identify key drivers of attrition and build predictive models.
 | 02 | `02_Preprocessing.ipynb` | `data/processed/attrition_merged_base.csv` |
 | 03 | `03_FeatureEngineering_Badgeuse.ipynb` | `data/processed/attrition_with_avg_hours.csv` |
 | 04 | `04_KMeans_Exploration.ipynb` | `data/processed/kmeans_clusters.csv` |
-| 05 | `05_Regression_Preparation.ipynb` | `data/processed/housing_train_prepared.csv`, `data/processed/housing_test_prepared.csv` |
-| 06 | `06_Regression_Lineaire.ipynb` | `data/processed/housing_linear_metrics.csv`, `data/processed/housing_linear_test_predictions.csv`, `data/processed/housing_linear_coefficients.csv` |
-| 07 | `07_Regression_Comparaison_Modeles.ipynb` | `data/processed/housing_model_comparison.csv`, `data/processed/housing_model_predictions_test.csv`, `data/processed/housing_model_cv_scores.csv` |
+| 05 | `05_Regression_Preparation.ipynb` | `data/processed/attrition_train_prepared.csv`, `data/processed/attrition_test_prepared.csv` |
+| 06 | `06_Regression_Lineaire.ipynb` | `data/processed/attrition_linear_metrics.csv`, `data/processed/attrition_linear_test_predictions.csv`, `data/processed/attrition_linear_coefficients.csv` |
+| 07 | `07_Regression_Comparaison_Modeles.ipynb` | `data/processed/attrition_model_comparison.csv`, `data/processed/attrition_model_predictions_test.csv`, `data/processed/attrition_model_cv_scores.csv` |
+
+Notes de continuité :
+- `05` part directement de `data/processed/kmeans_clusters.csv` (sortie du notebook `04`).
+- `05/06/07` ne refont pas les traitements metier deja faits en `02/03/04` (imputation, `avg_work_hours`, clustering).
 
 
 ## Prosit 1 livrables
