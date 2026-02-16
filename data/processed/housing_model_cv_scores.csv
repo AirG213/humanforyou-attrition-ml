@@ -1,4 +1,0 @@
-model,rmse_cv_mean,rmse_cv_std
-RandomForestRegressor,51209.332213842215,923.7341662860908
-LinearRegression,68568.86315091464,866.314316766763
-DecisionTreeRegressor,72536.814360978,1342.0005828773749
