@@ -1,7 +1,7 @@
 model,tn,fp,fn,tp
 LogisticRegression,1076,34,157,56
 Perceptron,995,115,133,80
-SVM,1096,14,101,112
+SVC,1104,6,152,61
 KNN,1041,69,154,59
 NaiveBayes,1008,102,129,84
 DecisionTree,1100,10,187,26
